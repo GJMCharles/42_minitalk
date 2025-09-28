@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 12:02:14 by grcharle          #+#    #+#             */
-/*   Updated: 2025/08/19 14:33:56 by grcharle         ###   ########.fr       */
+/*   Updated: 2025/08/26 14:30:25 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,9 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	t_list	*tmp;
-
-	tmp = lst;
 	if (!lst)
-		return ((void *)0);
-	while (tmp->content)
-	{
-		if (tmp->next != (void *)0)
-			tmp = tmp->next;
-		else
-			break ;
-	}
-	return (tmp);
+		return ((t_list *)(void *)0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
 }

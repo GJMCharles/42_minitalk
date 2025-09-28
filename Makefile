@@ -3,56 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+         #
+#    By: grcharle <grcharle@42student.fr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/08/17 14:46:43 by grcharle          #+#    #+#              #
-#    Updated: 2025/08/25 13:14:49 by grcharle         ###   ########.fr        #
+#    Created: 2025/09/29 01:19:08 by grcharle          #+#    #+#              #
+#    Updated: 2025/09/29 01:19:12 by grcharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME_CLIENT := client
-NAME_SERVER := server
+.DEFAULT_GOAL := all
 
+LIBFT_SRC := ./libft
+
+RM := rm -frv
 CC := cc
+CFLAGS := -Wall -Wextra -Werror
+LDFLAGS := -I. -L$(LIBFT_SRC) -lft
 
-FLAGS := -Wall -Wextra -Werror
+NAME := server client
 
-SOURCES_SERVER := \
-	minitalk_server.c
+OBJECTS_SERVER := $(patsubst %.c,%.o,server.c)
+OBJECTS_CLIENT := $(patsubst %.c,%.o,client.c)
 
-SOURCES_CLIENT := \
-	minitalk_client.c
+all: LIBFT $(NAME)
 
-OBJECTS_SERVER := $(patsubst %.c,%.o,$(SOURCES_SERVER))
-OBJECTS_CLIENT := $(patsubst %.c,%.o,$(SOURCES_CLIENT))
-
-%.o: %.c
-	@$(CC) $(FLAGS) -c $< -o $@
-
-$(NAME_SERVER): $(OBJECTS_SERVER)
-	@make -C libft all
-	@make -C ft_printf all
-	$(CC) $(FLAGS) $^ -L ./ft_printf -lftprintf -o $@
-
-$(NAME_CLIENT): $(OBJECT_CLIENT)
-	@make -C libft all
-
-all: $(NAME_SERVER) $(NAME_CLIENT)
-
-bonus:
+LIBFT:
+	@make -C $(LIBFT_SRC) all
 
 clean:
-	@make -C libft clean
-	@make -C ft_printf clean
-	@$(RM) -frv $(OBJECTS_SERVER)
-	@$(RM) -frv $(OBJECTS_CLIENT)
+	@make -C $(LIBFT_SRC) clean
+	@$(RM) $(OBJECTS_SERVER) $(OBJECTS_CLIENT)
 
-fclean: clean
-	@make -C libft fclean
-	@make -C ft_printf fclean
-	@$(RM) -frv $(NAME_SERVER)
-	@$(RM) -frv $(NAME_CLIENT)
-
+fclean:
+	@make -C $(LIBFT_SRC) fclean
+	@$(RM) $(NAME)
 
 re: fclean all
 

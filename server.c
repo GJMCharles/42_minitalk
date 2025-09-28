@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: grcharle <grcharle@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/30 11:59:05 by grcharle          #+#    #+#             */
-/*   Updated: 2025/08/23 13:01:17 by grcharle         ###   ########.fr       */
+/*   Created: 2025/09/29 01:18:39 by grcharle          #+#    #+#             */
+/*   Updated: 2025/09/29 01:18:41 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+int		main(int argc, char *argv[])
 {
-	if (lst == (void *)0)
-		return ;
-	del(lst->content);
-	free(lst);
-	lst = (void *)0;
+	(void) argc;
+	(void) argv;
+	return (0);
 }

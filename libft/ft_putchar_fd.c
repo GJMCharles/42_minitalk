@@ -12,10 +12,7 @@
 
 #include "libft.h"
 
-void	ft_putchar_fd(char c, int fd)
+size_t	ft_putchar_fd(char c, int fd)
 {
-	if (write(fd, &c, 1) < 0)
-	{
-	}
-	return ;
+	return (write(fd, &c, 1) < 0);
 }

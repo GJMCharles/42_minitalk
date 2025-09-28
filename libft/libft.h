@@ -6,7 +6,7 @@
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:13:28 by grcharle          #+#    #+#             */
-/*   Updated: 2025/08/19 14:20:39 by grcharle         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:11:22 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ char		**ft_split(char const *s, char c);
 char		*ft_itoa(int n);
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
-void		ft_putchar_fd(char c, int fd);
+size_t		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(char *s, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 
 t_list		*ft_lstnew(void *content);
-void		ft_lstadd_front(t_list **lst, t_list *n);
+void		ft_lstadd_front(t_list **lst, t_list *front_node);
 int			ft_lstsize(t_list *lst);
 t_list		*ft_lstlast(t_list *lst);
-void		ft_lstadd_back(t_list **lst, t_list *lc);
+void		ft_lstadd_back(t_list **lst, t_list *back_node);
 void		ft_lstdelone(t_list *lst, void (*del)(void *));
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
