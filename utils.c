@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/29 22:10:16 by grcharle          #+#    #+#             */
-/*   Updated: 2025/09/29 22:12:41 by grcharle         ###   ########.fr       */
+/*   Created: 2025/09/30 17:11:15 by grcharle          #+#    #+#             */
+/*   Updated: 2025/09/30 17:12:51 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "minitalk.h"
 
-# include <signal.h>
-# include <asm-generic/signal-defs.h>
-# include <stdio.h>
-
-# include "ft_printf.h"
-
-typedef struct s_minitalk
+void	error_found(char *message)
 {
-	int	pid_client;
-	int	pid_server;
-}	t_minitalk;
-
-void	error_found(char *message);
-
-#endif // MINITALK_H
+	ft_printf("Error: %s\n", message);
+	exit(EXIT_FAILURE);
+}

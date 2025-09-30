@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/29 19:14:17 by grcharle          #+#    #+#             */
-/*   Updated: 2025/09/29 22:04:26 by grcharle         ###   ########.fr       */
+/*   Created: 2025/06/07 11:21:15 by grcharle          #+#    #+#             */
+/*   Updated: 2025/06/30 06:28:01 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+size_t	print_integer(int nb, short int abs)
 {
-	unsigned char	*tmp_dest;
-	unsigned char	*tmp_src;
-	size_t			i;
+	char	*data;
 
-	if (!dest && !src)
-		return (0);
-	tmp_dest = (unsigned char *)dest;
-	tmp_src = (unsigned char *)src;
-	i = 0;
-	if (tmp_dest > tmp_src)
-	{
-		while (n--)
-			tmp_dest[n] = tmp_src[n];
-	}
+	if (!abs)
+		data = ft_itoa((int) nb);
 	else
-	{
-		while (i < n)
-		{
-			tmp_dest[i] = tmp_src[i];
-			i += 1;
-		}
-	}
-	return (dest);
+		data = ft_uitoa((unsigned int) nb);
+	if (!data)
+		return (0);
+	return (print_data(data));
 }

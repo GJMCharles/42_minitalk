@@ -3,62 +3,70 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: grcharle <grcharle@42student.fr>           +#+  +:+       +#+         #
+#    By: grcharle <grcharle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/09/29 22:11:15 by grcharle          #+#    #+#              #
-#    Updated: 2025/09/29 22:18:26 by gjmcharles       ###   ########.fr        #
+#    Created: 2025/05/31 22:56:16 by grcharle          #+#    #+#              #
+#    Updated: 2025/06/30 06:23:13 by grcharle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # .DEFAULT_GOAL := all
 
-NAME := client server
+NAME := libftprintf.a
 
 RM := rm -frv
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 MAKEFLAGS := --no-print-directory
 
-LIBFT_SRC := ./libft
-FTPRINTF_SRC := ./ftprintf
+LIBFT_SRC := ../libft
 
-LDFLAGS := -I. -I$(LIBFT_SRC) -I$(FTPRINTF_SRC)
-LDLIBS := \
-	-lc \
-	-L$(LIBFT_SRC) -lft \
-	-L$(FTPRINTF_SRC) -lftprintf
+LDFLAGS := -I. -I$(LIBFT_SRC)
+LDLIBS := -L$(LIBFT_SRC) -lft
 
-SOURCES := client.c server.c utils.c
+LIBFT_OBJ := \
+	ft_putchar_fd.o \
+	ft_strdup.o \
+	ft_strlen.o \
+	ft_putstr_fd.o \
+	ft_putnbr_fd.o \
+	ft_strlcpy.o \
+	ft_strjoin.o \
+	ft_calloc.o \
+	ft_memcpy.o \
+	ft_bzero.o \
+	ft_memset.o \
+	ft_itoa.o
+
+SOURCES := \
+	ft_printf.c \
+	ft_printf_string.c \
+	ft_printf_integer.c \
+	ft_printf_hex.c
 
 OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
 
-all: LIBS client server
+all: LIBFT $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@ $(LDLIBS)
 
-LIBS:
+LIBFT:
 	@make -C $(LIBFT_SRC) all
-	@make -C $(FTPRINTF_SRC) all
-
-client:
-	$(CC) $(CFLAGS) $(LDFLAGS) utils.o client.o -o client $(LDLIBS)
-
-server:
-	$(CC) $(CFLAGS) $(LDFLAGS) utils.o server.o -o server $(LDLIBS)
 
 $(NAME): $(OBJECTS)
+	$(AR) -x $(LIBFT_SRC)/libft.a $(LIBFT_OBJ)
+	$(AR) -rcs $@ $^ $(LIBFT_OBJ)
+	ranlib $@
 
-clean:
+clean :
 	@make -C $(LIBFT_SRC) clean
-	@make -C $(FTPRINTF_SRC) clean
-	@$(RM) $(OBJECTS)
+	@$(RM) $(OBJECTS) $(LIBFT_OBJ)
 
-fclean: clean
+fclean : clean
 	@make -C $(LIBFT_SRC) fclean
-	@make -C $(FTPRINTF_SRC) fclean
 	@$(RM) $(NAME)
 
-re: fclean all
+re : fclean all
 
 .PHONY: all clean fclean re

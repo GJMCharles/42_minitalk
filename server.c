@@ -5,14 +5,45 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: grcharle <grcharle@42student.fr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/29 01:18:39 by grcharle          #+#    #+#             */
-/*   Updated: 2025/09/29 01:18:41 by grcharle         ###   ########.fr       */
+/*   Created: 2025/09/29 22:10:51 by grcharle          #+#    #+#             */
+/*   Updated: 2025/09/29 22:11:07 by grcharle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		main(int argc, char *argv[])
+#include "minitalk.h"
+
+static void	handle_action(int signum, siginfo_t *info, void *context)
 {
-	(void) argc;
+	(void) signum;
+	(void) info;
+	(void) context;
+
+	ft_printf("! %d\n", info->si_pid);
+}
+
+void	process_server(void)
+{
+	struct sigaction	s_server;
+
+	if (sigemptyset(&s_server.sa_mask) != 0)
+		error_found("sigemptyset failed to initialize");
+	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
+	s_server.sa_sigaction = &handle_action;
+	if (sigaction(SIGUSR1, &s_server, (void *)0) != 0)
+		error_found("sigaction failed for SIGUSR1");
+	if (sigaction(SIGUSR2, &s_server, (void *)0) != 0)
+		error_found("sigaction failed for SIGUSR2");
+}
+
+int	main(int argc, char *argv[])
+{
 	(void) argv;
-	return (0);
+
+	if (argc != 1)
+		error_found("CMD ARG is ≠ 1");
+	process_server();
+	ft_printf("Server PID: %d\n", getpid());
+	while (1)
+		pause();
+	return (EXIT_SUCCESS);
 }

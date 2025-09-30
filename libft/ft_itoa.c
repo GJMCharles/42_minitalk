@@ -63,3 +63,16 @@ char	*ft_itoa(int n)
 	ptr = fill_pointer(ptr, len, n);
 	return (ptr);
 }
+
+char	*ft_uitoa(unsigned int n)
+{
+	size_t	len;
+	char	*ptr;
+
+	len = get_size((int) n);
+	ptr = (char *) ft_calloc(len + 1, sizeof(char));
+	if (!ptr)
+		return (0);
+	ptr = fill_pointer(ptr, len, (int) n);
+	return (ptr);
+}
