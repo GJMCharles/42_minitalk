@@ -14,8 +14,10 @@
 # define MINITALK_H
 
 # include <signal.h>
-# include <asm-generic/signal-defs.h>
 # include <stdio.h>
+# include <stddef.h>
+#include <bits/sigaction.h>
+// # include <sys/types.h>
 
 # include "ft_printf.h"
 

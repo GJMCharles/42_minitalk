@@ -12,13 +12,13 @@
 
 #include "minitalk.h"
 
-static void	handle_action(int signum, siginfo_t *info, void *context)
+void	handle_action(int signum, siginfo_t *info, void *ucontext)
 {
 	(void) signum;
 	(void) info;
-	(void) context;
+	(void) ucontext;
 
-	ft_printf("! %d\n", info->si_pid);
+	ft_printf("! %d ~ %d\n", signum, info->si_pid);
 }
 
 void	process_server(void)
@@ -27,7 +27,7 @@ void	process_server(void)
 
 	if (sigemptyset(&s_server.sa_mask) != 0)
 		error_found("sigemptyset failed to initialize");
-	s_server.sa_flags = SA_SIGINFO | SA_RESTART;
+	s_server.sa_flags = 0;
 	s_server.sa_sigaction = &handle_action;
 	if (sigaction(SIGUSR1, &s_server, (void *)0) != 0)
 		error_found("sigaction failed for SIGUSR1");
