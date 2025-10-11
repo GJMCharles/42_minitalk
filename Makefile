@@ -22,9 +22,8 @@ MAKEFLAGS := --no-print-directory
 LIBFT_SRC := ./libft
 FTPRINTF_SRC := ./ftprintf
 
-LDFLAGS := -I. -I$(LIBFT_SRC) -I$(FTPRINTF_SRC)
+LDFLAGS := -I. -I$(FTPRINTF_SRC) -I$(LIBFT_SRC)
 LDLIBS := \
-	-lc \
 	-L$(LIBFT_SRC) -lft \
 	-L$(FTPRINTF_SRC) -lftprintf
 
@@ -35,7 +34,7 @@ OBJECTS := $(patsubst %.c,%.o,$(SOURCES))
 all: LIBS client server
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@ $(LDLIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
 
 LIBS:
 	@make -C $(LIBFT_SRC) all

@@ -22,7 +22,7 @@ MAKEFLAGS := --no-print-directory
 LIBFT_SRC := ../libft
 
 LDFLAGS := -I. -I$(LIBFT_SRC)
-LDLIBS := -L$(LIBFT_SRC) -lft
+LDLIBS :=
 
 LIBFT_OBJ := \
 	ft_putchar_fd.o \
