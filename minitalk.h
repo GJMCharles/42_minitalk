@@ -16,8 +16,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stddef.h>
-#include <bits/sigaction.h>
-// # include <sys/types.h>
+# include <bits/sigaction.h>
 
 # include "ft_printf.h"
 

@@ -17,7 +17,6 @@ void	handle_action(int signum, siginfo_t *info, void *ucontext)
 	(void) signum;
 	(void) info;
 	(void) ucontext;
-
 	ft_printf("! %d ~ %d\n", signum, info->si_pid);
 }
 
@@ -38,7 +37,6 @@ void	process_server(void)
 int	main(int argc, char *argv[])
 {
 	(void) argv;
-
 	if (argc != 1)
 		error_found("CMD ARG is ≠ 1");
 	process_server();

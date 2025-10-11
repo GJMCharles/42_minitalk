@@ -33,7 +33,6 @@ void	send_message(int pid, const char *message)
 		}
 		i += 1;
 	}
-	// ft_printf("> PID: %i ~ %s\n", pid, message);
 	kill(pid, SIGUSR2);
 }
 
@@ -49,7 +48,7 @@ void	handle_action(int signum)
 	}
 }
 
-int		is_number(char *arg1)
+int	is_number(char *arg1)
 {
 	size_t	i;
 
@@ -65,13 +64,12 @@ int		is_number(char *arg1)
 
 void	process_client(void)
 {
-	struct sigaction s_client;
+	struct sigaction	s_client;
 
 	if (sigemptyset(&s_client.sa_mask) != 0)
 		error_found("sigemptyset failed to initialize");
 	s_client.sa_flags = SA_SIGINFO;
 	s_client.sa_handler = &handle_action;
-
 	if (sigaction(SIGUSR1, &s_client, (void *)0) == -1)
 		error_found("sigaction failed for SIGUSR1");
 	if (sigaction(SIGUSR2, &s_client, (void *)0) == -1)
@@ -80,9 +78,9 @@ void	process_client(void)
 
 int	main(int argc, char *argv[])
 {
-	(void) argv;
 	int		pid;
 
+	(void) argv;
 	if (argc != 3)
 		error_found("CMD ARG is ≠ 3");
 	pid = ft_atoi(argv[1]);
