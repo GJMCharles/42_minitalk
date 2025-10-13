@@ -18,20 +18,6 @@ void	error_found(char *message)
 	exit(EXIT_FAILURE);
 }
 
-int		is_number(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i += 1;
-	}
-	return (1);
-}
-
 void	emit_signal(int pid, unsigned int c, unsigned int bits)
 {
 	unsigned int	i;

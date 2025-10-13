@@ -14,14 +14,9 @@
 # define MINITALK_H
 
 # include <signal.h>
-# include <stdio.h>
-# include <stddef.h>
-# include <bits/sigaction.h>
-
 # include "ft_printf.h"
 
 void	error_found(char *message);
-int		is_number(const char *str);
 void	emit_signal(int pid, unsigned int c, unsigned int bits);
 
 #endif // MINITALK_H

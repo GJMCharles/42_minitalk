@@ -59,13 +59,10 @@ void	handle_action(int signum, siginfo_t *info, void *ucontext)
 	}
 }
 
-int	main(int argc, char *argv[])
+void	init_server_signal(void)
 {
 	struct sigaction	s_server;
 
-	(void) argv;
-	if (argc != 1)
-		error_found("Command ARG is ≠ 1");
 	if (sigemptyset(&s_server.sa_mask) != 0)
 		error_found("sigemptyset failed to initialize");
 	s_server.sa_flags = SA_SIGINFO;
@@ -74,6 +71,14 @@ int	main(int argc, char *argv[])
 		error_found("sigaction failed for SIGUSR1");
 	if (sigaction(SIGUSR2, &s_server, (void *)0) != 0)
 		error_found("sigaction failed for SIGUSR2");
+}
+
+int	main(int argc, char *argv[])
+{
+	(void) argv;
+	if (argc != 1)
+		error_found("Command ARG is ≠ 1");
+	init_server_signal();
 	ft_printf("Server PID: %d\n", getpid());
 	while (1)
 		pause();
