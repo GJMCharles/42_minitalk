@@ -17,7 +17,8 @@ void	handle_action(int signum, siginfo_t *info, void *ucontext)
 	(void) signum;
 	(void) info;
 	(void) ucontext;
-	ft_printf("! %d ~ %d\n", signum, info->si_pid);
+	ft_printf("%u", (signum == SIGUSR1));
+	// ft_printf("! %d ~ %u\n", signum, info->si_pid);
 }
 
 void	process_server(void)
