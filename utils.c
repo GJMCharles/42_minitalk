@@ -17,3 +17,17 @@ void	error_found(char *message)
 	ft_printf("Error: %s\n", message);
 	exit(EXIT_FAILURE);
 }
+
+int		is_number(const char *arg1)
+{
+	size_t	i;
+
+	i = 0;
+	while (arg1[i] != '\0')
+	{
+		if (!ft_isdigit(arg1[i]))
+			return (0);
+		i += 1;
+	}
+	return (1);
+}

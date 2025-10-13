@@ -27,5 +27,6 @@ typedef struct s_minitalk
 }	t_minitalk;
 
 void	error_found(char *message);
+int		is_number(const char *arg1);
 
 #endif // MINITALK_H

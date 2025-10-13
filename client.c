@@ -48,20 +48,6 @@ void	handle_action(int signum)
 	}
 }
 
-int	is_number(char *arg1)
-{
-	size_t	i;
-
-	i = 0;
-	while (arg1[i] != '\0')
-	{
-		if (!ft_strchr("0123456789", arg1[i]))
-			return (0);
-		i += 1;
-	}
-	return (1);
-}
-
 void	process_client(void)
 {
 	struct sigaction	s_client;
