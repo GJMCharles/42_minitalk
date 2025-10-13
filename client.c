@@ -12,19 +12,6 @@
 
 #include "minitalk.h"
 
-void	emit_signal(int pid, unsigned int c, unsigned int bits)
-{
-	while (bits)
-	{
-		if (c >> (bits - 1) & 1)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		usleep(200);
-		bits -= 1;
-	}
-}
-
 void	send_message(int pid, const char *message)
 {
 	int				i;
@@ -37,12 +24,12 @@ void	send_message(int pid, const char *message)
 	}
 }
 
-void	response_handler(int signum)
+void	handle_response(int signum)
 {
 	if (signum == SIGUSR1)
-		ft_printf("SIGUSR1 ended\n");
+		ft_printf("(server) An error has occured.\nPlease contact server admin.\n");
 	else if (signum == SIGUSR2)
-		ft_printf("SIGUSR2 ended\n");
+		ft_printf("Message sent.\n");
 }
 
 int	main(int argc, char *argv[])
@@ -60,8 +47,8 @@ int	main(int argc, char *argv[])
 		error_found("invalid server PID");
 	if (sigemptyset(&s_client.sa_mask) != 0)
 		error_found("sigemptyset failed to initialize");
-	s_client.sa_flags = SA_SIGINFO;
-	s_client.sa_handler = &response_handler;
+	s_client.sa_flags = 0;
+	s_client.sa_handler = &handle_response;
 	if (sigaction(SIGUSR1, &s_client, (void *)0) == -1)
 		error_found("sigaction failed for SIGUSR1");
 	if (sigaction(SIGUSR2, &s_client, (void *)0) == -1)

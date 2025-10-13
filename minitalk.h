@@ -20,13 +20,8 @@
 
 # include "ft_printf.h"
 
-typedef struct s_minitalk
-{
-	int	pid_client;
-	int	pid_server;
-}	t_minitalk;
-
 void	error_found(char *message);
 int		is_number(const char *str);
+void	emit_signal(int pid, unsigned int c, unsigned int bits);
 
 #endif // MINITALK_H

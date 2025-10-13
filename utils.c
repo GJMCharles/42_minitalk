@@ -31,3 +31,19 @@ int		is_number(const char *str)
 	}
 	return (1);
 }
+
+void	emit_signal(int pid, unsigned int c, unsigned int bits)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < bits)
+	{
+		if ((c >> i) & 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		usleep(100);
+		i += 1;
+	}
+}
