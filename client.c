@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <unistd.h>
 
 void	send_message(unsigned int spid, const char *message)
 {
@@ -37,6 +36,7 @@ void	send_message(unsigned int spid, const char *message)
 		}
 		message += 1;
 	}
+	exit(EXIT_SUCCESS);
 }
 
 void	handle_response(int signum)

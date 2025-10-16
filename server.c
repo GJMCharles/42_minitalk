@@ -14,17 +14,18 @@
 
 t_data g_data;
 
-void parse_signal_data(int signum, int cpid)
-{
-	ft_putnbr_fd((signum == SIGUSR1), STDOUT_FILENO);
-	if (kill(cpid, SIGUSR1) == -1)
-		error_found("failed to send signal SIGUSR1");
-}
-
 void	handle_action(int signum, siginfo_t *info, void *ucontext)
 {
+	(void) signum;
+	(void) info;
 	(void) ucontext;
-	parse_signal_data(signum, info->si_pid);
+	// if (signum == SIGUSR1)
+	// 	ft_putchar_fd('1', STDOUT_FILENO);
+	// else
+	// 	ft_putchar_fd('0', STDOUT_FILENO);
+	usleep(100);
+	if (kill(info->si_pid, SIGUSR1) == -1)
+		error_found("failed to send signal SIGUSR1");
 }
 
 void	init_callback(struct sigaction *server_sig)
