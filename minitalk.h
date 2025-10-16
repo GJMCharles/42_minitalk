@@ -16,7 +16,17 @@
 # include <signal.h>
 # include "ft_printf.h"
 
+typedef struct s_data
+{
+	unsigned int	pid;	// client process ID
+	unsigned int	count;	// signal count received
+	unsigned int	pos;	// binary position [0...8]
+	unsigned int	index;	// index for message character
+	char			*text;	// message
+	struct s_data *next;
+}	t_data;
+
 void	error_found(char *message);
-void	emit_signal(int pid, unsigned int c, unsigned int bits);
+void	init_signal(struct sigaction *sig, void (fcall)(struct sigaction *sig));
 
 #endif // MINITALK_H

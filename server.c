@@ -12,76 +12,37 @@
 
 #include "minitalk.h"
 
-char	*get_text_size(unsigned int client_pid, int signum, unsigned int count, unsigned int *size)
-{
-	char	*text;
-
-	if (signum == SIGUSR1)
-		*size |= (1 << count);
-	if (count == 31)
-	{
-		text = ft_calloc(sizeof(char), *size + 1);
-		if (!text)
-		{
-			emit_signal(client_pid, 1, 1);
-			error_found("Failed to allocate space with 'malloc'");
-		}
-		return (text);
-	}
-	return (0);
-}
+t_data g_data;
 
 void	handle_action(int signum, siginfo_t *info, void *ucontext)
 {
-	static unsigned int		count;
-	static char				*text;
-	static unsigned int		size;
-	static unsigned int		i;
-
+	(void) signum;
+	(void) info;
 	(void) ucontext;
-	if (count < 32)
-		text = get_text_size(info->si_pid, signum, count, &size);
-	else
-	{
-		if (signum == SIGUSR1)
-			text[(i / 8)] |= (1 << (i % 8));
-		i += 1;
-	}
-	count += 1;
-	if (count >= 32 && ((count - 32) / 8) == size)
-	{
-		ft_printf("client [%d]: %s\n", info->si_pid, text);
-		free(text);
-		count = 0;
-		size = 0;
-		i = 0;
-		emit_signal(info->si_pid, 0, 1);
-	}
+	// if (signum == SIGUSR1)
+	// 	ft_putchar_fd('1', STDOUT_FILENO);
+	// else
+	// 	ft_putchar_fd('0', STDOUT_FILENO);
+	usleep(100);
+	if (kill(info->si_pid, SIGUSR1) == -1)
+		error_found("failed to send signal SIGUSR1");
 }
 
-void	init_server_signal(void)
+void	init_callback(struct sigaction *server_sig)
+{
+	server_sig->sa_flags = SA_SIGINFO;
+	server_sig->sa_sigaction = &handle_action;
+}
+
+int	main(void)
 {
 	struct sigaction	s_server;
 
-	if (sigemptyset(&s_server.sa_mask) != 0)
-		error_found("sigemptyset failed to initialize");
-	s_server.sa_flags = SA_SIGINFO;
-	s_server.sa_sigaction = &handle_action;
-	if (sigaction(SIGUSR1, &s_server, (void *)0) != 0)
-		error_found("sigaction failed for SIGUSR1");
-	if (sigaction(SIGUSR2, &s_server, (void *)0) != 0)
-		error_found("sigaction failed for SIGUSR2");
-}
-
-int	main(int argc, char *argv[])
-{
-	(void) argv;
-	if (argc != 1)
-		error_found("Command ARG is ≠ 1");
-	init_server_signal();
-	ft_printf("Server PID: %d\n", getpid());
+	init_signal(&s_server, init_callback);
+	ft_printf("Server PID: [%d]\n", getpid());
+	ft_printf("Your server is now ready for use.\n");
+	ft_printf("=================================\n");
 	while (1)
-		pause();
+		sleep(1);
 	return (EXIT_SUCCESS);
 }
-

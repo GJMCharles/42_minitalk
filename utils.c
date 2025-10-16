@@ -18,18 +18,17 @@ void	error_found(char *message)
 	exit(EXIT_FAILURE);
 }
 
-void	emit_signal(int pid, unsigned int c, unsigned int bits)
+void	init_signal(struct sigaction *sig, void (fcall)(struct sigaction *sig))
 {
-	unsigned int	i;
-
-	i = 0;
-	while (i < bits)
-	{
-		if ((c >> i) & 1)
-			kill(pid, SIGUSR1);
-		else
-			kill(pid, SIGUSR2);
-		usleep(100);
-		i += 1;
-	}
+	if (sigemptyset(&(*sig).sa_mask) != 0)
+		error_found("sigemptyset failed to initialize");
+	fcall(&(*sig));
+	if (sigaddset(&(*sig).sa_mask, SIGUSR1) != 0)
+		error_found("sigaddset failed for SIGUSR1");
+	if (sigaddset(&(*sig).sa_mask, SIGUSR2) != 0)
+		error_found("sigaddset failed for SIGUSR2");
+	if (sigaction(SIGUSR1, &(*sig), (void *)0) != 0)
+		error_found("sigaction failed for SIGUSR1");
+	if (sigaction(SIGUSR2, &(*sig), (void *)0) != 0)
+		error_found("sigaction failed for SIGUSR2");
 }

@@ -12,45 +12,40 @@
 
 #include "minitalk.h"
 
-void	send_message(int pid, const char *message)
+void	send_message(unsigned int spid, const char *message)
 {
-	int				i;
+	unsigned int	i;
 
-	i = 0;
-	while (message[i] != '\0')
+	while (*message)
 	{
-		emit_signal(pid, message[i], 8);
-		i += 1;
+		i = 0;
+		while (i++ < 8)
+		{
+			usleep(100);
+			if ((unsigned char)*message >> (i - 1) & 1)
+			{
+				if (kill(spid, SIGUSR1) == -1)
+					error_found("failed to send signal SIGUSR1");
+			}
+			else
+			{
+				if (kill(spid, SIGUSR2) == -1)
+					error_found("failed to send signal SIGUSR2");
+			}
+			pause();
+		}
+		message += 1;
 	}
+	exit(EXIT_SUCCESS);
 }
 
 void	handle_response(int signum)
 {
-	if (signum == SIGUSR1)
-	{
-		ft_printf("(server) An error has occured.\nPlease contact server admin.\n");
-	}
-	else if (signum == SIGUSR2)
-	{
-		ft_printf("Message sent.\n");
-	}
+	if (signum == SIGUSR2)
+		error_found("(server) An error has occured.");
 }
 
-void	init_client_signal(void)
-{
-	struct sigaction	s_client;
-
-	if (sigemptyset(&s_client.sa_mask) != 0)
-		error_found("sigemptyset failed to initialize");
-	s_client.sa_flags = 0;
-	s_client.sa_handler = &handle_response;
-	if (sigaction(SIGUSR1, &s_client, (void *)0) == -1)
-		error_found("sigaction failed for SIGUSR1");
-	if (sigaction(SIGUSR2, &s_client, (void *)0) == -1)
-		error_found("sigaction failed for SIGUSR2");
-}
-
-int		is_number(const char *str)
+int	is_number(const char *str)
 {
 	size_t	i;
 
@@ -64,11 +59,18 @@ int		is_number(const char *str)
 	return (1);
 }
 
+void	init_callback(struct sigaction *client_sig)
+{
+	client_sig->sa_flags = 0;
+	client_sig->sa_handler = &handle_response;
+}
+
 int	main(int argc, char *argv[])
 {
-	int		pid;
+	struct sigaction	s_client;
+	unsigned int		pid;
 
-	(void) argv;
+	(void) argc;
 	if (argc != 3)
 		error_found("CMD ARG is ≠ 3");
 	if (!is_number(argv[1]))
@@ -76,8 +78,7 @@ int	main(int argc, char *argv[])
 	pid = ft_atoi(argv[1]);
 	if (pid <= 0)
 		error_found("invalid server PID");
-	init_client_signal();
-	emit_signal(pid, ft_strlen(argv[2]), 32);
+	init_signal(&s_client, init_callback);
 	send_message(pid, argv[2]);
 	return (EXIT_SUCCESS);
 }
